@@ -1,0 +1,90 @@
+<!doctype html>
+    <html>
+        <head>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.8/d3.min.js" type="text/JavaScript"></script>
+            <link href="style.css" rel = "stylesheet">
+        </head>
+        <h1 id = "h1"> Task 2 </h1>
+        <svg style="width:500px;height:500px;" ></svg>
+        <ul>
+            <li>
+                <div id = "svg1"> 
+
+                    <a href="index.HTML"> Home Page </a>
+                    
+                </div>
+            </li>
+            <li>
+                <div id = "svg2">
+                    <a href="Task_01.HTML">Task 1: Horizontal Bar Graph</a>
+                </div>
+            </li>
+        </ul>
+        <body>
+        <script> 
+    d3.select("svg")
+        .style('background-color', '#C4A484');
+      
+
+    d3.csv("Kaggle-modified-Suddharshan.csv",function(data) {
+        var xScale = d3.scaleLinear().domain([0,50]).range([50,450]);
+        var yScale = d3.scaleLinear().domain([4.65,5]).range([400,50]);
+
+        var xAxis = d3.axisBottom().scale(xScale);
+
+        var yAxis = d3.axisLeft().scale(yScale).ticks(5);
+            
+        d3.select("svg").append("g").attr("id", "xAxisG").attr("transform", "translate(5,400)").call(xAxis);
+        d3.select("svg").append("text").attr("id","x label").attr("x",50).attr("y",430).text("Duration").attr("fill","white").attr("font-size", 15)
+        .attr("transform", "translate(155,10)").attr("font-weight", 700);
+
+        d3.select("svg").append("g").attr("id", "yAxisG").attr("transform", "translate(55,0)").call(yAxis);
+        d3.select("svg").append("text").attr("id","y label").attr("x",-260).attr("y",15).text("Average Rating").attr("fill","white").attr("font-size", 15)
+        .attr("transform", "rotate(-90)").attr("font-weight", 700);
+        
+        d3.select("svg").selectAll("circle")
+            .data(data).enter().append("circle")
+                .attr("r", 5).attr("cx", d => xScale(d.Duration))
+                .attr("cy", d => yScale(d.Rating))
+        
+        d3.select("svg").selectAll("null").data(data).enter().append("text")
+            .text(d => d.Initals)
+            .attr("x", d => xScale(d.Duration))
+            .attr("y", d => yScale(d.Rating))
+            .attr("fill","black");
+
+ 
+
+            
+      const yGrid = d3.axisLeft()
+        .scale(yScale)
+        .tickFormat('')
+        .ticks(8)
+        .tickSizeInner(40);
+
+        for (var i = 1; i<11; i++){
+        if (i==10){
+
+            d3.select("svg").append('g')
+            .attr('class','y-grid')
+            .attr("transform", "translate(" + 455 + ",0)")
+            .call(yGrid);         
+        } 
+
+        else{
+
+            t = 55 + i*40
+            d3.select("svg").append('g')
+                .attr('class','y-grid')
+                .attr("transform", "translate(" + t + ",0)")
+                .call(yGrid);
+        }
+        }
+
+    
+    });
+    
+   
+    </script>
+    </body>
+    </html>

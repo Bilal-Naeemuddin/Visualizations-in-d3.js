@@ -1,0 +1,14 @@
+a:link, a:visited {
+    color:blue;
+    color: (internal value);
+    text-decoration: underline;
+    cursor: auto;
+  }
+
+li{
+    margin-left: 300px;
+    font-size: 20px;
+}
+#h1{
+    margin-left: 250px;
+}

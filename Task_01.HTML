@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang = "en">
+   <head>
+      <script src = "https://d3js.org/d3.v4.min.js"></script>
+      <link href="style.css" rel = "stylesheet">
+   </head>
+   <h1 id = "h1"> Task 1 </h1>
+   <body>
+      
+      <div>
+         <input name="updateButton" 
+                type="button" 
+                value="Update" 
+                onclick="updateData()" />
+
+      <div>
+      <input name="updateButton" 
+               type="button" 
+               value="Normal" 
+               onclick="reViz(x)" />
+            </div>
+
+    <svg style="width:500px;height:500px;"></svg>
+    
+    <ul>
+      <li>
+          <div id = "svg1"> 
+
+              <a href="index.HTML"> Home Page </a>
+              
+          </div>
+      </li>
+      <li>
+          <div id = "svg2">
+              <a href="Task_02.HTML">Task 2: Scatter Plot</a>
+          </div>
+      </li>
+      
+      <script>
+
+             
+            const dataset = [{Student: 1, marks: 6}, { Student: 2, marks: 100}, { Student: 3, marks: 90}, 
+            { Student: 4, marks: 55}, { Student: 5, marks: 83}, { Student: 6, marks: 88}, { Student: 7, marks: 91}, 
+            { Student: 8, marks: 92}, { Student: 9, marks: 67}, { Student: 10, marks: 73}];
+
+            const x = dataset.sort(function(x,y){     /*Sorting the dataset using ascending function*/
+                return d3.ascending(x.marks, y.marks);
+            })
+            
+            function updateData(data){
+            for (var i = 0; i<3; i++){
+                  d3.select("rect").remove(); 
+                          
+            }
+            }
+            
+
+            function reViz(dataset){
+               d3.selectAll("rect").remove()
+               return dataViz(dataset)
+            }
+
+
+            function dataViz(dataset) {
+               var maxMark = d3.max(dataset, d => parseInt(d.marks));
+               var maxStudent = d3.max(dataset, d => parseInt(d.Student));
+
+               xScale = d3.scaleLinear().domain([0,maxStudent]).range([0,450]);
+               yScale = d3.scaleLinear().domain([0,maxMark]).range([0, 400]);
+               
+               var yAxis = d3.axisRight().scale(yScale);
+               d3.select("svg").append("g").attr("id", "yAxisG").call(yAxis)
+               .attr("transform","rotate(-180 241 230)")
+               .style("text-anchor", "start");
+               
+               var xAxis = d3.axisBottom().scale(xScale)
+               .tickSize(3).ticks(10);
+               d3.select("svg").append("g").attr("id", "xAxisG").call(xAxis)
+                  .attr("transform","rotate(-180 238 240)");
+               
+               d3.select("svg").attr("style","height: 565px; width: 500px;").style('background-color', '#D3D3D3');
+
+               d3.select("svg")
+                  .selectAll("rect")
+                  .data(dataset)
+                  .enter()
+                  .append("rect")                
+                     .attr("width", 38)
+                     .attr("height", d => yScale(parseInt(d.marks)))
+                     .attr("x", (d,i) => i * 46)
+                     .attr("y", d => 460 - yScale(parseInt(d.marks)))
+                     .style("fill", d => "black")
+                     .style("fill", "#7DF9FF")
+                     .style("stroke", "gray")
+                     .style("stroke-width", "3px");
+
+                     
+
+               d3.select("svg")
+               .attr("transform","rotate(90 15 15)") /* Rotates and transforms the graph*/
+               .append("text")
+                  .attr("class", "x label")
+                  .attr("text-anchor", "d")
+                  .text("Student ID")
+                  .attr("font-weight", 700)
+                  .attr("font-size",15)
+                  .attr("transform","rotate(180 140 244)");
+
+
+               d3.select("svg")
+               .append("text")
+                  .attr("class", "y label")
+                  .attr("text-anchor", "d")
+                  .text("Student Marks")
+                  .attr("font-weight", 700)
+                  .attr("font-size",15)
+                  .attr("transform","rotate(-90 397 -99)");
+            }
+
+   
+            dataViz(x)
+      </script>
+   </body>
+</html>
+
+
+
+
+
+
